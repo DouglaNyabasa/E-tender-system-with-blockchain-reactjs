@@ -158,16 +158,18 @@ app.post("/officer/adduser",(req,res)=>{
 
     mySQL_connection.query(`INSERT INTO officers VALUES(NULL,'${firstName+" "+lastName}',${email},'${dob}','${gender},NOW()')`,(err,results)=>{
         if (err) res.status(500).json({err:"Data quering error"});
+        var token = generateToken(email,"Procurement Officer");
         res.json({
-            data:"ok"
+            data:"ok",
+            u_token:token
         })
     });
 })
 app.post("/supplier/register",upload.single('file'),(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
-    const {companyName,username,password,year,companyRegNo,registrationNo} = req.body;
+    const {name,email,password,phone,address} = req.body;
 
-    mySQL_connection.query(`INSERT INTO suppliers VALUES(NULL,'${companyName}','${year}','${companyRegNo}','${registrationNo}',NOW())`,(err,results)=>{
+    mySQL_connection.query(`INSERT INTO suppliers VALUES(NULL,'${name}',${address},'${email}','${password}','${phone}',NOW())`,(err,results)=>{
         if (err) res.status(500).json({err:"Data quering error"});
 
         res.status(200).json({data:"ok"});

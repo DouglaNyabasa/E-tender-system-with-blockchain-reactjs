@@ -42,13 +42,14 @@ const AddProcurementOfficer = () => {
     }).then((data)=>{
       if(data.data){
         alert("User has been added");
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setGender('');
+        setDob('');
       }
     })
-    setFirstName('');
-    setLastName('');
-    setId('');
-    setGender('');
-    setDob('');
+    
   };
 
   return (
