@@ -133,15 +133,15 @@ app.get("/api/otp/verify",(req,res)=>{
 });
 app.post("/login",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
-    const {username,password} = req.body;
+    const {email,password} = req.body;
 
-    mySQL_connection.query(`SELECT * FROM users WHERE username='${username}'`,(err,results)=>{
+    mySQL_connection.query(`SELECT * FROM users WHERE username='${email}'`,(err,results)=>{
         if (err) res.status(500).json({err:"Data quering error"});
 
         if(results.length>0){
             const user_pass = results[0].password;
             if(user_pass === decryptData(password)){
-                var token = generateToken(username,role);
+                var token = generateToken(email,role);
                 res.json({u_token:token,names: results[0].names});
             }else{
                 res.json({msg:"Wrong Password"});

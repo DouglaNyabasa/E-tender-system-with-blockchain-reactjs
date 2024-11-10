@@ -11,6 +11,32 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+const handleSubmit = ()=>{
+  fetch(import.meta.env.VITE_API_URL+"/login",{
+    method:"POST",
+    headers: {
+      'Content-Type': 'application/json'  // Tell the server that we're sending JSON data
+    },
+    body: JSON.stringify(formData);
+  }).then((response)=>{
+   if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); 
+  }).then(data => {
+    if(data.u_token){
+      const date = new Date();
+      date.setTime(date.getTime() + (31 * 24 * 60 * 60 * 1000));  // Set expiration date
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = `token=${data.u_token}; ${expires}; path=/`;  // Set cookie
+      window.location.href = "/"
+    }
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+}
+
   return (
     <section className="px-5 lg:px-0">
       <div className="w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10">
@@ -18,7 +44,7 @@ const Login = () => {
           Hello <span className="text-primaryColor ">Welcome</span> Back
         </h3>
 
-        <form action="" className="py-4 md:py-0">
+        <form onClick={()=>handleSubmit()} className="py-4 md:py-0">
           <div className="mb-5">
             <input
               className="border border-zinc-300  rounded w-full p-2 mt-1"
