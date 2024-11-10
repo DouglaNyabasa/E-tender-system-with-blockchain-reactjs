@@ -152,6 +152,17 @@ app.post("/login",(req,res)=>{
     });
 
 });
+app.post("/officer/adduser",(req,res)=>{
+    if(!req.body) return res.status(401).json({error:"Missing Params"});
+    const {firstName,lastName,email,dob,gender} = req.body;
+
+    mySQL_connection.query(`INSERT INTO officers VALUES(NULL,'${firstName+" "+lastName}',${email},'${dob}','${gender},NOW()')`,(err,results)=>{
+        if (err) res.status(500).json({err:"Data quering error"});
+        res.json({
+            data:"ok"
+        })
+    });
+})
 app.post("/supplier/register",upload.single('file'),(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
     const {companyName,username,password,year,companyRegNo,registrationNo} = req.body;
