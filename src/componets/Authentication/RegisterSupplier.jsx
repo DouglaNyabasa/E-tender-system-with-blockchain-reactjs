@@ -39,7 +39,7 @@ const RegisterSupplier = () => {
 
   const submitHandler = async (event) => {
     event.preventDetail();
-    fetch(import.meta.env.VITE_API_URL+"/login",{
+    fetch(import.meta.env.VITE_API_URL+"/supplier/register",{
       method:"POST",
       headers:{
         "Authorization":`Bearer `+getCookie("token")
