@@ -175,6 +175,20 @@ app.post("/supplier/register",upload.single('file'),(req,res)=>{
         res.status(200).json({data:"ok"});
     })
 });
+app.post("/admin/register",upload.single('file'),(req,res)=>{
+    if(!req.body) return res.status(401).json({error:"Missing Params"});
+    const {email,password} = req.body;
+
+    mySQL_connection.query(`INSERT INTO admins VALUES(NULL,'${email}','${password}',NOW())`,(err,results)=>{
+        if (err) res.status(500).json({err:"Data quering error"});
+
+        var token = generateToken(email,"Admin");
+        res.json({
+            data:"ok",
+            u_token:token
+        })
+    })
+});
 
 app.get("/transactions/:id",(req,res)=>{
 
