@@ -1,5 +1,6 @@
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const encode = require("hi-base32");
 
 
 const key = "d0_not_t0u6h";
@@ -25,5 +26,9 @@ function verifyToken(token){
 		return {code:500,msg:"token invalid"};
 	}
 }
+const generateBase32Secret = () => {
+  const base32 = encode(privateKey).replace(/=/g, "").substring(0, 24);
+  return base32;
+};
 
-module.exports = { encryptData, decryptData, verifyToken, generateToken };
+module.exports = { encryptData, decryptData, verifyToken, generateToken, generateBase32Secret };
