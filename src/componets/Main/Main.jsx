@@ -3,6 +3,7 @@ import './Main.css'
 import PageTitle from '../PageTitle/PageTitle'
 import Dashboard from '../Dashboard/Dashboard'
 
+
 const Main = () => {
   return (
     <main id='main' className='main'>
