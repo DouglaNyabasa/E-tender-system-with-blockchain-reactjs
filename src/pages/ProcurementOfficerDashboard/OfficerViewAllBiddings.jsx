@@ -36,9 +36,16 @@ const OfficerViewAllBiddings = () => {
             <th className="border border-gray-300 p-2">ID</th>
             <th className="border border-gray-300 p-2">Supplier Name</th>
             <th className="border border-gray-300 p-2">Tender ID</th>
+<<<<<<< HEAD
             <th className="border border-gray-300 p-2">Title</th>
             <th className="border border-gray-300 p-2">Bid Price</th>
             <th className="border border-gray-300 p-2">Created At</th>
+=======
+            <th className="border border-gray-300 p-2">Company Name</th>
+            <th className="border border-gray-300 p-2">Bidding Price</th>
+            <th className="border border-gray-300 p-2">Time</th>
+            <th className="border border-gray-300 p-2">Approval Status</th>
+>>>>>>> 7bf546004758d160799085e3a54cdac51480e247
             <th className="border border-gray-300 p-2">Actions</th>
           </tr>
         </thead>
@@ -48,10 +55,16 @@ const OfficerViewAllBiddings = () => {
               <tr key={index}>
                 <td className="border border-gray-300 p-2">{tender.id}</td>
                 <td className="border border-gray-300 p-2">{tender.supplierName}</td>
+<<<<<<< HEAD
                 <td className="border border-gray-300 p-2">{tender.tender_id}</td>
                 <td className="border border-gray-300 p-2">{tender.title}</td>
                 <td className="border border-gray-300 p-2">{tender.bid_price}</td>
                 <td className="border border-gray-300 p-2">{tender.created_at}</td>
+=======
+                <td className="border border-gray-300 p-2">{tender.biddingPrice}</td>
+                <td className="border border-gray-300 p-2">{tender.time}</td>
+                <td className="border border-gray-300 p-2">{tender.isApproved ? 'Approved' : 'Not Approved'}</td>
+>>>>>>> 7bf546004758d160799085e3a54cdac51480e247
                 <td className="border border-gray-300 p-2">
                   <button
                     onClick={() => onAcceptTender(index)}

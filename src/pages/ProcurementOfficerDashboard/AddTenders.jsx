@@ -83,7 +83,6 @@ const AddTenders = () => {
             required
           />
         </div>
-
         <button type="submit" className="bg-blue-500 text-white rounded p-2">Add Tender</button>
       </form>
     </div>

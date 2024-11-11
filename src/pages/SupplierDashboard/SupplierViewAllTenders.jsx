@@ -5,6 +5,7 @@ const SupplierViewAllTenders = () => {
   const [tenders,setTenders] = React.useState([]);
 
   React.useEffect(()=>{
+<<<<<<< HEAD
     fetch(import.meta.env.VITE_API_URL+"/suppliers",{
       method:"GET",
       headers:{
@@ -18,6 +19,9 @@ const SupplierViewAllTenders = () => {
     }).then((data)=>{
       setTenders(data.data);
     })
+=======
+    fetch(import.meta.env.VITE_API_URL+"/suppliers")
+>>>>>>> 7bf546004758d160799085e3a54cdac51480e247
   })
   return (
     <div className="p-4 bg-white shadow-md rounded">
