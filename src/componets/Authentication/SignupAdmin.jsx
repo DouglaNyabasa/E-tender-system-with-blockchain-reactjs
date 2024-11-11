@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 
+import {  useNavigate } from "react-router-dom";
+
+
 
 const SignupAdmin = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -49,6 +53,7 @@ const SignupAdmin = () => {
           
           <div className="mt-7">
             <button
+             onClick={()=> navigate('adminDashboard')} 
               type="submit"
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >

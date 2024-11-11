@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import companyLogo from '../../assets/flutterwave.jpg'
 
 
 
 const RegisterSupplier = () => {
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [formData, setFormData] = useState({
@@ -117,6 +118,7 @@ const RegisterSupplier = () => {
 
           <div className="mt-7">
             <button
+           onClick={()=> navigate('supplierDashboard')}
               type="submit"
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >

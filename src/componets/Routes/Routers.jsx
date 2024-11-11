@@ -8,15 +8,15 @@ import Welcome from '../Welcome/Welcome'
 import Login from '../Authentication/Login'
 
 import AddProcurementOfficer from '../../pages/AdminDashboard/Pages/AddProcurementOfficer'
-import ViewBiddings from '../../pages/AdminDashboard/Pages/ViewBiddings'
+// import ViewBiddings from '../../pages/AdminDashboard/Pages/ViewBiddings'
 import ViewGrantedTender from '../../pages/AdminDashboard/Pages/ViewGrantedTender'
 import ViewSuppliers from '../../pages/AdminDashboard/Pages/ViewSuppliers'
-import AdminDashboard from '../../pages/AdminDashboard/AdminDashboard'
+
 import AddTenders from '../../pages/ProcurementOfficerDashboard/AddTenders'
 import ApprovedTenders from '../../pages/ProcurementOfficerDashboard/ApprovedTenders'
 import OfficerDashboard from '../../pages/ProcurementOfficerDashboard/OfficerDashboard'
 import OfficerViewAllBiddings from '../../pages/ProcurementOfficerDashboard/OfficerViewAllBiddings'
-import OfficerViewAllTenders from '../../pages/ProcurementOfficerDashboard/OfficerViewAllTenders'
+// import OfficerViewAllTenders from '../../pages/ProcurementOfficerDashboard/OfficerViewAllTenders'
 import ApplyTender from '../../pages/SupplierDashboard/ApplyTender'
 import SupplierDashboard from '../../pages/SupplierDashboard/SupplierDashboard'
 import SupplierViewAllTenders from '../../pages/SupplierDashboard/SupplierViewAllTenders'
@@ -44,12 +44,12 @@ const Routers = () => {
       <Route path='/addTender' element={<AddTenders/>} />
       <Route path='/officerDashboard' element={<OfficerDashboard/>} />
       <Route path='/officerViewAllBiddings' element={<OfficerViewAllBiddings/>} />
-      <Route path='/officerViewAllTenders' element={<OfficerViewAllTenders/>} />
+      {/* <Route path='/officerViewAllTenders' element={<OfficerViewAllTenders/>} /> */}
       <Route path='/adminRegister' element={<SignupAdmin/>} />
 
       
       <Route path='/addProcurementOfficer' element={<AddProcurementOfficer/>} />
-      <Route path='/viewBiddings' element={<ViewBiddings/>} />
+      {/* <Route path='/viewBiddings' element={<ViewBiddings/>} /> */}
       <Route path='/viewGrantedTender' element={<ViewGrantedTender/>} />
       <Route path='/viewSuppliers' element={<ViewSuppliers/>} />
       <Route path='/adminDashboard' element={<Dashboard/>} />
