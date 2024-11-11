@@ -1,6 +1,11 @@
 import React from 'react'
 
-const SupplierViewAllTenders = ({ tenders }) => {
+const SupplierViewAllTenders = () => {
+  const [tenders,setTenders] = React.useState([]);
+
+  React.useEffect(()=>{
+    fetch(import.meta.env.VITE_API_URL+"/suppliers")
+  })
   return (
     <div className="p-4 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Tender List</h2>

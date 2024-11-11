@@ -1,26 +1,29 @@
-import React from 'react'
+import React,{ useState, useEffect} from 'react'
+import { getCookie } from '../../data';
 
 const AddTenders = ({ onAddTender }) => {
   const [id, setId] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [notificationId, setNotificationId] = useState('');
-  const [itemId, setItemId] = useState('');
-  const [itemName, setItemName] = useState('');
+  const [title, setTitle] = useState('');
+  const [minPrice, setPrice] = useState();
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
   const [biddingPrice, setBiddingPrice] = useState('');
-  const [time, setTime] = useState('');
+  const [expiryTime, setExpiryTime] = useState('');
   const [isApproved, setIsApproved] = useState(false); // New state for approval status
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddTender({ id, companyName, notificationId, itemId, itemName, biddingPrice, time, isApproved });
+    fetch(import.meta.env.VITE_API_URL+"/tenders",{
+      method:"PUT",
+      headers:{
+        "Authorization":getCookie("token")
+      },
+      body:{
+       }
+    })
     // Reset form fields
-    setId('');
     setCompanyName('');
-    setNotificationId('');
-    setItemId('');
-    setItemName('');
     setBiddingPrice('');
-    setTime('');
     setIsApproved(false); // Reset approval status
   };
 
@@ -28,76 +31,48 @@ const AddTenders = ({ onAddTender }) => {
     <div className="p-4 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Add Tender</h2>
       <form onSubmit={handleSubmit}>
+        
         <div className="mb-4">
-          <label className="block mb-2">Tender ID</label>
+          <label className="block mb-2">Name</label>
           <input
             type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Company Name</label>
+          <label className="block mb-2">Description</label>
           <input
             type="text"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Notification ID</label>
+          <label className="block mb-2">Minimum Price</label>
           <input
             type="text"
-            value={notificationId}
-            onChange={(e) => setNotificationId(e.target.value)}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Item ID</label>
+          <label className="block mb-2">Expiry Date</label>
           <input
             type="text"
-            value={itemId}
-            onChange={(e) => setItemId(e.target.value)}
+            value={date}
+            onChange={(e) => setExpiryTime(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block mb-2">Item Name</label>
-          <input
-            type="text"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
-            className="border rounded w-full p-2"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Bidding Price</label>
-          <input
-            type="number"
-            value={biddingPrice}
-            onChange={(e) => setBiddingPrice(e.target.value)}
-            className="border rounded w-full p-2"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Time</label>
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="border rounded w-full p-2"
-            required
-          />
-        </div>
+        
         <div className="mb-4">
           <label className="flex items-center">
             <input

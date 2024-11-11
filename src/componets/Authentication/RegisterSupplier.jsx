@@ -48,7 +48,6 @@ const RegisterSupplier = () => {
         email:email,
         name: companyName,
         password: password,
-        file: photo,
         phone: phoneNumber,
         address: companyAddress
       }

@@ -19,7 +19,7 @@ const SignupAdmin = () => {
     headers: {
       'Content-Type': 'application/json'  // Tell the server that we're sending JSON data
     },
-    body: JSON.stringify(formData);
+    body: JSON.stringify(formData)
   }).then((response)=>{
    if (!response.ok) {
       throw new Error('Network response was not ok');

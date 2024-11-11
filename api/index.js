@@ -272,7 +272,25 @@ app.get("/tenders/:id",(req,res)=>{
     }catch(err){
         res.status(400).json({error:"Something went wrong."});
     }
+});
+app.get("/tenders/status/:status",(req,res)=>{
 
+    try{
+
+       if(req.params.status){
+         mySQL_connection.query(`SELECT * FROM tenders WHERE status=${req.params.status}`,(err,results)=>{
+             if (err) res.status(500).json({err:"Data quering error"});
+             res.json({data:"ok"});
+        });
+     }else{
+         mySQL_connection.query(`SELECT * FROM tenders`,(err,results)=>{
+             if (err) res.status(500).json({err:"Data quering error"});
+             res.json({data:"ok"});
+        });
+     }
+    }catch(err){
+        res.status(400).json({error:"Something went wrong."});
+    }
 });
 app.put("/tenders",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
