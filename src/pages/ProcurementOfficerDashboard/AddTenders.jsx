@@ -1,114 +1,89 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { getCookie } from '../../data';
 
-const AddTenders = ({ onAddTender }) => {
-  const [id, setId] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [notificationId, setNotificationId] = useState('');
-  const [itemId, setItemId] = useState('');
-  const [itemName, setItemName] = useState('');
-  const [biddingPrice, setBiddingPrice] = useState('');
-  const [time, setTime] = useState('');
-  const [isApproved, setIsApproved] = useState(false); // New state for approval status
+const AddTenders = () => {
+  const [title, setTitle] = useState('');
+  const [minPrice, setPrice] = useState();
+  const [description, setDescription] = useState('');
+  const [expiryTime, setExpiryTime] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddTender({ id, companyName, notificationId, itemId, itemName, biddingPrice, time, isApproved });
-    // Reset form fields
-    setId('');
-    setCompanyName('');
-    setNotificationId('');
-    setItemId('');
-    setItemName('');
-    setBiddingPrice('');
-    setTime('');
-    setIsApproved(false); // Reset approval status
+    fetch(import.meta.env.VITE_API_URL + "/tenders", {
+      method: "PUT",
+      headers: {
+        "Authorization": getCookie("token")
+      },
+      body: {
+        name: title,
+        description: description,
+        bid_price: minPrice,
+        expiryData: expiryTime
+      }
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Error occurred")
+      } return response.json()
+    }).then((data) => {
+      if (data.data === "ok") {
+        // Reset form fields
+        setTitle("");
+        setPrice("");
+        setDescription("");
+        setExpiryTime("");
+      } else {
+        alert("Something went wrong")
+      }
+    })
+
   };
 
   return (
     <div className="p-4 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Add Tender</h2>
       <form onSubmit={handleSubmit}>
+
         <div className="mb-4">
-          <label className="block mb-2">Tender ID</label>
+          <label className="block mb-2">Name</label>
           <input
             type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Company Name</label>
+          <label className="block mb-2">Description</label>
           <input
             type="text"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Notification ID</label>
+          <label className="block mb-2">Minimum Price</label>
           <input
             type="text"
-            value={notificationId}
-            onChange={(e) => setNotificationId(e.target.value)}
+            value={minPrice}
+            onChange={(e) => setPrice(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Item ID</label>
+          <label className="block mb-2">Expiry Date</label>
           <input
             type="text"
-            value={itemId}
-            onChange={(e) => setItemId(e.target.value)}
+            value={expiryTime}
+            onChange={(e) => setExpiryTime(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block mb-2">Item Name</label>
-          <input
-            type="text"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
-            className="border rounded w-full p-2"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Bidding Price</label>
-          <input
-            type="number"
-            value={biddingPrice}
-            onChange={(e) => setBiddingPrice(e.target.value)}
-            className="border rounded w-full p-2"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Time</label>
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="border rounded w-full p-2"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={isApproved}
-              onChange={() => setIsApproved(!isApproved)}
-              className="mr-2"
-            />
-            Approved
-          </label>
-        </div>
+
         <button type="submit" className="bg-blue-500 text-white rounded p-2">Add Tender</button>
       </form>
     </div>

@@ -1,6 +1,24 @@
 import React from 'react'
+import { getCookie } from '../../data';
 
-const SupplierViewAllTenders = ({ tenders }) => {
+const SupplierViewAllTenders = () => {
+  const [tenders,setTenders] = React.useState([]);
+
+  React.useEffect(()=>{
+    fetch(import.meta.env.VITE_API_URL+"/suppliers",{
+      method:"GET",
+      headers:{
+        "Authorization":"Bearer "+getCookie("token")
+      }
+    }).then((response)=>{
+      if(!response.ok){
+        throw new Error("Error occured")
+      }
+      return response.json()
+    }).then((data)=>{
+      setTenders(data.data);
+    })
+  })
   return (
     <div className="p-4 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Tender List</h2>
@@ -8,12 +26,10 @@ const SupplierViewAllTenders = ({ tenders }) => {
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">Tender ID</th>
-            <th className="border border-gray-300 p-2">Company Name</th>
-            <th className="border border-gray-300 p-2">Notification ID</th>
-            <th className="border border-gray-300 p-2">Item ID</th>
-            <th className="border border-gray-300 p-2">Item Name</th>
+            <th className="border border-gray-300 p-2">Title</th>
             <th className="border border-gray-300 p-2">Bidding Price</th>
-            <th className="border border-gray-300 p-2">Time</th>
+            <th className="border border-gray-300 p-2">Expiry Date</th>
+            <th className="border border-gray-300 p-2">Created At</th>
             <th className="border border-gray-300 p-2">Approval Status</th>
           </tr>
         </thead>
@@ -22,13 +38,11 @@ const SupplierViewAllTenders = ({ tenders }) => {
             tenders.map((tender, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">{tender.id}</td>
-                <td className="border border-gray-300 p-2">{tender.companyName}</td>
-                <td className="border border-gray-300 p-2">{tender.notificationId}</td>
-                <td className="border border-gray-300 p-2">{tender.itemId}</td>
-                <td className="border border-gray-300 p-2">{tender.itemName}</td>
-                <td className="border border-gray-300 p-2">{tender.biddingPrice}</td>
-                <td className="border border-gray-300 p-2">{tender.time}</td>
-                <td className="border border-gray-300 p-2">{tender.isApproved ? 'Approved' : 'Not Approved'}</td>
+                <td className="border border-gray-300 p-2">{tender.title}</td>
+                <td className="border border-gray-300 p-2">{tender.bid_price}</td>
+                <td className="border border-gray-300 p-2">{tender.expiry_date}</td>
+                <td className="border border-gray-300 p-2">{tender.created_at}</td>
+                <td className="border border-gray-300 p-2">{tender.status ===1?"Approved":'Not Approved'}</td>
               </tr>
             ))
           ) : (

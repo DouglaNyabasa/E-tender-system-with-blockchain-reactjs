@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,7 +18,7 @@ const handleSubmit = ()=>{
     headers: {
       'Content-Type': 'application/json'  // Tell the server that we're sending JSON data
     },
-    body: JSON.stringify(formData);
+    body: JSON.stringify(formData)
   }).then((response)=>{
    if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -44,7 +45,7 @@ const handleSubmit = ()=>{
           Hello <span className="text-primaryColor ">Welcome</span> Back
         </h3>
 
-        <form onClick={()=>handleSubmit()} className="py-4 md:py-0">
+        <form onSubmit={handleSubmit} className="py-4 md:py-0">
           <div className="mb-5">
             <input
               className="border border-zinc-300  rounded w-full p-2 mt-1"
@@ -74,6 +75,7 @@ const handleSubmit = ()=>{
           <div className="mt-7">
             <button
               type="submit"
+              onClick={()=> navigate('adminDashboard')} 
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >
               Login

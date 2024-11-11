@@ -141,7 +141,7 @@ app.post("/login",(req,res)=>{
         if(results.length>0){
             const user_pass = results[0].password;
             if(user_pass === decryptData(password)){
-                var token = generateToken(email,role);
+                var token = generateToken(email,results[0].role);
                 res.json({u_token:token,names: results[0].names});
             }else{
                 res.json({msg:"Wrong Password"});
@@ -154,9 +154,9 @@ app.post("/login",(req,res)=>{
 });
 app.post("/officer/adduser",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
-    const {firstName,lastName,email,dob,gender} = req.body;
+    const {firstName,lastName,email,password,dob,gender} = req.body;
 
-    mySQL_connection.query(`INSERT INTO officers VALUES(NULL,'${firstName+" "+lastName}',${email},'${dob}','${gender},NOW()')`,(err,results)=>{
+    mySQL_connection.query(`INSERT INTO officers VALUES(NULL,'${firstName+" "+lastName}','${email}','${password}','${dob}','${gender},NOW()')`,(err,results)=>{
         if (err) res.status(500).json({err:"Data quering error"});
         var token = generateToken(email,"Procurement Officer");
         res.json({
@@ -165,7 +165,7 @@ app.post("/officer/adduser",(req,res)=>{
         })
     });
 })
-app.post("/supplier/register",upload.single('file'),(req,res)=>{
+app.post("/supplier/register",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
     const {name,email,password,phone,address} = req.body;
 
@@ -221,7 +221,6 @@ app.post("/transactions",(req,res)=>{
     const {supplierName,tenderId,title,price,status} = req.body;
 
     try{
-        verifyToken(token);
 
         mySQL_connection.query(`INSERT INTO transactions VALUES(NULL,'${supplierName}',${tenderId},'${title}',${price},)`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
@@ -243,7 +242,6 @@ app.post("/transactions/edit",(req,res)=>{
     const {transactionId,amount,status} = req.body;
 
     try{
-        verifyToken(token);
 
         mySQL_connection.query(`UPDATE transactions SET bid_price=${amount}`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
@@ -259,27 +257,45 @@ app.get("/tenders/:id",(req,res)=>{
     try{
 
        if(req.params.id){
-         mySQL_connection.query(`SELECT * FROM tenders WHERE Id=${req.params.id}`,(err,results)=>{
+         mySQL_connection.query(`SELECT * FROM tenders WHERE id=${req.params.id}`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
-             res.json({data:"ok"});
+             res.json({data:results[0]});
         });
      }else{
          mySQL_connection.query(`SELECT * FROM tenders`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
-             res.json({data:"ok"});
+             res.json({data:results});
         });
      }
     }catch(err){
         res.status(400).json({error:"Something went wrong."});
     }
+});
+app.get("/tenders/status/:status",(req,res)=>{
 
+    try{
+
+       if(req.params.status){
+         mySQL_connection.query(`SELECT * FROM tenders WHERE status=${req.params.status}`,(err,results)=>{
+             if (err) res.status(500).json({err:"Data quering error"});
+             res.json({data:results});
+        });
+     }else{
+         mySQL_connection.query(`SELECT * FROM tenders`,(err,results)=>{
+             if (err) res.status(500).json({err:"Data quering error"});
+             res.json({data:results});
+        });
+     }
+    }catch(err){
+        res.status(400).json({error:"Something went wrong."});
+    }
 });
 app.put("/tenders",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
-    const {title,supplierName,supplierId,bidPrice,expiryDate} = req.body;
+    const {title,description,bidPrice,expiryDate} = req.body;
 
 
-    mySQL_connection.query(`INSERT INTO tenders VALUES(NULL,'${title}','${supplierName}',${supplierId},${bidPrice},NOW(),${expiryDate},1)`,(err,results)=>{
+    mySQL_connection.query(`INSERT INTO tenders VALUES(NULL,'${title}','${description}',${bidPrice},NOW(),${expiryDate},1)`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
              res.json({data:"ok"});
         });
@@ -290,13 +306,13 @@ app.post("/tenders/:id",(req,res)=>{
 
     //Delete the tender
     if(reqCode===1){
-        mySQL_connection.query(`DELETE FROM tenders WHERE Id=${req.params.id}`,(err,results)=>{
+        mySQL_connection.query(`DELETE FROM tenders WHERE id=${req.params.id}`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
              res.json({data:"ok"});
         });
     }else if(reqCode ===2){
         // Modify status of tender
-        mySQL_connection.query(`UPDATE tenders SET status=${status} WHERE Id=${req.params.id}`,(err,results)=>{
+        mySQL_connection.query(`UPDATE tenders SET status=${status} WHERE id=${req.params.id}`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
              res.json({data:"ok"});
         });
@@ -304,11 +320,12 @@ app.post("/tenders/:id",(req,res)=>{
 });
 app.get("/tenders/:id",(req,res)=>{
     
-    mySQL_connection.query(`SELECT * FROM tenders WHERE Id=${req.params.id}`,(err,results)=>{
+    mySQL_connection.query(`SELECT * FROM tenders WHERE id=${req.params.id}`,(err,results)=>{
          if (err) res.status(500).json({err:"Data quering error"});
          res.json({data:results[0]});
     });
-})
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

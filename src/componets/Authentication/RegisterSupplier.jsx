@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import companyLogo from '../../assets/flutterwave.jpg'
 
 
 
 const RegisterSupplier = () => {
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [formData, setFormData] = useState({
@@ -48,7 +49,6 @@ const RegisterSupplier = () => {
         email:email,
         name: companyName,
         password: password,
-        file: photo,
         phone: phoneNumber,
         address: companyAddress
       }
@@ -75,7 +75,7 @@ const RegisterSupplier = () => {
           Create a <span className="text-primaryColor">Supplier</span>{" "}Account
         </h3>
 
-        <form action=""  className="py-4 md:py-0">
+        <form onSubmit={submitHandler}  className="py-4 md:py-0">
         <div className="mb-5">
                 <input
                   className="border border-zinc-300  rounded w-full p-2 mt-1"
@@ -143,6 +143,7 @@ const RegisterSupplier = () => {
 
           <div className="mt-7">
             <button
+           onClick={()=> navigate('supplierDashboard')}
               type="submit"
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >

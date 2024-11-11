@@ -10,7 +10,8 @@ const Layout = () => {
   return (
     <>
       
-      <Header/>
+      <TopBar/>
+   
       <main>
         <Routers/>
       </main>

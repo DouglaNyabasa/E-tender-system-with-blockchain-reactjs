@@ -1,50 +1,49 @@
 import React from 'react'
+import { getCookie } from '../../data';
 
 const ApplyTender = () => {
+  const [tenderId, setTendersId] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+
+  React.useEffect(() => {
+    fetch(import.meta.env.VITE_API_URL + "/tenders/"+tenderId, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + getCookie("token")
+      }
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Error occurred");
+      }
+      return response.json();
+    }).then((data) => {
+      setTenders(data.data);
+    })
+  })
   return (
     <div className="p-4 bg-white shadow-md rounded">
-      <h2 className="text-2xl font-bold mb-4">Available Tenders</h2>
-      <table className="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 p-2">Tender ID</th>
-            <th className="border border-gray-300 p-2">Company Name</th>
-            <th className="border border-gray-300 p-2">Notification ID</th>
-            <th className="border border-gray-300 p-2">Item ID</th>
-            <th className="border border-gray-300 p-2">Item Name</th>
-            <th className="border border-gray-300 p-2">Bidding Price</th>
-            <th className="border border-gray-300 p-2">Time</th>
-            <th className="border border-gray-300 p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tenders.length > 0 ? (
-            tenders.map((tender, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">{tender.id}</td>
-                <td className="border border-gray-300 p-2">{tender.companyName}</td>
-                <td className="border border-gray-300 p-2">{tender.notificationId}</td>
-                <td className="border border-gray-300 p-2">{tender.itemId}</td>
-                <td className="border border-gray-300 p-2">{tender.itemName}</td>
-                <td className="border border-gray-300 p-2">{tender.biddingPrice}</td>
-                <td className="border border-gray-300 p-2">{tender.time}</td>
-                <td className="border border-gray-300 p-2">
-                  <button
-                    onClick={() => onApplyTender(tender.id)}
-                    className="bg-green-500 text-white rounded px-2 py-1"
-                  >
-                    Apply
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" className="border border-gray-300 p-2 text-center">No tenders available</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <h2 className="text-2xl font-bold mb-4">Add Tender</h2>
+      <div className="mb-4">
+        <label className="block mb-2">{title}</label>
+      </div>
+      <div className="mb-4">
+        <label className="block mb-2">Description</label>
+        <p className="p-2">{description}</p>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block mb-2">Amount</label>
+          <input
+            type="number"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="border rounded w-full p-2"
+            required
+          />
+        </div>
+        <button type="submit" className="bg-blue-500 text-white rounded p-2">Add Tender</button>
+      </form>
     </div>
   );
 };
