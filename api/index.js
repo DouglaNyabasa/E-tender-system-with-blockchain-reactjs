@@ -133,15 +133,15 @@ app.get("/api/otp/verify",(req,res)=>{
 });
 app.post("/login",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
-    const {username,password} = req.body;
+    const {email,password} = req.body;
 
-    mySQL_connection.query(`SELECT * FROM users WHERE username='${username}'`,(err,results)=>{
+    mySQL_connection.query(`SELECT * FROM users WHERE username='${email}'`,(err,results)=>{
         if (err) res.status(500).json({err:"Data quering error"});
 
         if(results.length>0){
             const user_pass = results[0].password;
             if(user_pass === decryptData(password)){
-                var token = generateToken(username,role);
+                var token = generateToken(email,role);
                 res.json({u_token:token,names: results[0].names});
             }else{
                 res.json({msg:"Wrong Password"});
@@ -152,14 +152,41 @@ app.post("/login",(req,res)=>{
     });
 
 });
+app.post("/officer/adduser",(req,res)=>{
+    if(!req.body) return res.status(401).json({error:"Missing Params"});
+    const {firstName,lastName,email,dob,gender} = req.body;
+
+    mySQL_connection.query(`INSERT INTO officers VALUES(NULL,'${firstName+" "+lastName}',${email},'${dob}','${gender},NOW()')`,(err,results)=>{
+        if (err) res.status(500).json({err:"Data quering error"});
+        var token = generateToken(email,"Procurement Officer");
+        res.json({
+            data:"ok",
+            u_token:token
+        })
+    });
+})
 app.post("/supplier/register",upload.single('file'),(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});
-    const {companyName,username,password,year,companyRegNo,registrationNo} = req.body;
+    const {name,email,password,phone,address} = req.body;
 
-    mySQL_connection.query(`INSERT INTO suppliers VALUES(NULL,'${companyName}','${year}','${companyRegNo}','${registrationNo}',NOW())`,(err,results)=>{
+    mySQL_connection.query(`INSERT INTO suppliers VALUES(NULL,'${name}',${address},'${email}','${password}','${phone}',NOW())`,(err,results)=>{
         if (err) res.status(500).json({err:"Data quering error"});
 
         res.status(200).json({data:"ok"});
+    })
+});
+app.post("/admin/register",upload.single('file'),(req,res)=>{
+    if(!req.body) return res.status(401).json({error:"Missing Params"});
+    const {email,password} = req.body;
+
+    mySQL_connection.query(`INSERT INTO admins VALUES(NULL,'${email}','${password}',NOW())`,(err,results)=>{
+        if (err) res.status(500).json({err:"Data quering error"});
+
+        var token = generateToken(email,"Admin");
+        res.json({
+            data:"ok",
+            u_token:token
+        })
     })
 });
 
@@ -245,7 +272,25 @@ app.get("/tenders/:id",(req,res)=>{
     }catch(err){
         res.status(400).json({error:"Something went wrong."});
     }
+});
+app.get("/tenders/status/:status",(req,res)=>{
 
+    try{
+
+       if(req.params.status){
+         mySQL_connection.query(`SELECT * FROM tenders WHERE status=${req.params.status}`,(err,results)=>{
+             if (err) res.status(500).json({err:"Data quering error"});
+             res.json({data:"ok"});
+        });
+     }else{
+         mySQL_connection.query(`SELECT * FROM tenders`,(err,results)=>{
+             if (err) res.status(500).json({err:"Data quering error"});
+             res.json({data:"ok"});
+        });
+     }
+    }catch(err){
+        res.status(400).json({error:"Something went wrong."});
+    }
 });
 app.put("/tenders",(req,res)=>{
     if(!req.body) return res.status(401).json({error:"Missing Params"});

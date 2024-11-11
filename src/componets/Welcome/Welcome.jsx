@@ -11,6 +11,22 @@ const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex jus
 
 
 const Welcome = () => {
+  function getCookie(name) {
+    const nameEq = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i].trim();
+      if (c.indexOf(nameEq) === 0) {
+        return c.substring(nameEq.length, c.length);
+      }
+    }
+    return null; // If cookie doesn't exist
+  }
+  useEffect(()=>{
+     if(!getCookie("token")){
+      window.location.href= "/login";
+     } 
+  })
 
   return (
     
@@ -27,7 +43,6 @@ const Welcome = () => {
           
             <button
               type="button"
-          
               className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
             >
               <AiFillPlayCircle className="text-white mr-2" />

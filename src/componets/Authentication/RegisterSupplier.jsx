@@ -11,7 +11,6 @@ const RegisterSupplier = () => {
   const [formData, setFormData] = useState({
     email: "",
     companyName: "",
-    companyEmail: "",
     companyAddress: "",
     password: "",
     photo: selectedFile,
@@ -27,9 +26,46 @@ const RegisterSupplier = () => {
     const file = event.target.files[0];
     console.log(file);
   };
+  function getCookie(name) {
+    const nameEq = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i].trim();
+      if (c.indexOf(nameEq) === 0) {
+        return c.substring(nameEq.length, c.length);
+      }
+    }
+    return null; // If cookie doesn't exist
+  }
 
   const submitHandler = async (event) => {
     event.preventDetail();
+    fetch(import.meta.env.VITE_API_URL+"/supplier/register",{
+      method:"POST",
+      headers:{
+        "Authorization":`Bearer `+getCookie("token")
+      },
+      body:{
+        email:email,
+        name: companyName,
+        password: password,
+        phone: phoneNumber,
+        address: companyAddress
+      }
+    }).then((response)=>{
+      if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+    }).then((data)=>{
+      if(data.data){
+        const date = new Date();
+        date.setTime(date.getTime() + (31 * 24 * 60 * 60 * 1000));  // Set expiration date
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = `token=${data.u_token}; ${expires}; path=/`;  // Set cookie
+        window.location.href = "/"
+      }
+    })
   };
 
   return (
@@ -39,7 +75,7 @@ const RegisterSupplier = () => {
           Create a <span className="text-primaryColor">Supplier</span>{" "}Account
         </h3>
 
-        <form action="" className="py-4 md:py-0">
+        <form action=""  className="py-4 md:py-0">
         <div className="mb-5">
                 <input
                   className="border border-zinc-300  rounded w-full p-2 mt-1"
@@ -59,17 +95,6 @@ const RegisterSupplier = () => {
               placeholder="Company Address"
               name="companyAddress"
               value={FormData.companyAddress}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="mb-5">
-            <input
-              className="border border-zinc-300  rounded w-full p-2 mt-1"
-              required
-              type="text"
-              placeholder="Company Email"
-              name="companyEmail"
-              value={FormData.companyEmail}
               onChange={handleInputChange}
             />
           </div>

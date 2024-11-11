@@ -3,19 +3,53 @@ import React from 'react'
 const AddProcurementOfficer = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState("");
   const [role] = useState('Procurement Officer'); // Default role
   const [gender, setGender] = useState('');
   const [dob, setDob] = useState('');
 
+  function getCookie(name) {
+    const nameEq = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i].trim();
+      if (c.indexOf(nameEq) === 0) {
+        return c.substring(nameEq.length, c.length);
+      }
+    }
+    return null; // If cookie doesn't exist
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddUser({ firstName, lastName, id, role, gender, dob });
-    setFirstName('');
-    setLastName('');
-    setId('');
-    setGender('');
-    setDob('');
+    fetch(import.meta.env.VITE_API_URL+"/officer/adduser",{
+      method:"POST",
+      headers:{
+        "Authorization":`Bearer `+getCookie("token")
+      },
+      body:{
+        firstName:firstName,
+        lastName:lastName,
+        dob:dob,
+        gender:gender,
+        email:email
+      }
+    }).then((response)=>{
+      if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+    }).then((data)=>{
+      if(data.data){
+        alert("User has been added");
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setGender('');
+        setDob('');
+      }
+    })
+    
   };
 
   return (
@@ -43,11 +77,11 @@ const AddProcurementOfficer = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">ID</label>
+          <label className="block mb-2">Email</label>
           <input
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="border rounded w-full p-2"
             required
           />
