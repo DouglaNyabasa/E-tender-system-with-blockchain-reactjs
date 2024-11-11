@@ -11,7 +11,7 @@ function encryptData(str){
 	return encrypted.toString();
 }
 function decryptData(str){
-	var decrypted = CryptoJS.AES.decrypt(encryptedMessage, key);
+	var decrypted = CryptoJS.AES.decrypt(str, key);
   return decrypted.toString(CryptoJS.enc.Utf8);
 }
 function generateToken(username,role){

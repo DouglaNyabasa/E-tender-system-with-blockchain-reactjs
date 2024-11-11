@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mysql = require("mysql")
+const {encryptData} = require("./extras")
 
 const connection = mysql.createConnection({
     host:process.env.DBHOST,
@@ -75,21 +76,21 @@ const createTablesQueries = [
 const insertDummyDataQueries = [
     // Insert Users
     `INSERT INTO users (email, password, names, role) VALUES
-    ('john.doe@example.com', 'password123', 'John Doe', 'Admin'),
-    ('jane.smith@example.com', 'password456', 'Jane Smith', 'Procurement Officer'),
-    ('alice.johnson@example.com', 'password789', 'Alice Johnson', 'Supplier');`,
+    ('john.doe@example.com', '${encryptData("password123")}', 'John Doe', 'Admin'),
+    ('jane.smith@example.com', '${encryptData("password456")}', 'Jane Smith', 'Procurement Officer'),
+    ('alice.johnson@example.com', '${encryptData("password789")}', 'Alice Johnson', 'Supplier');`,
 
     // Insert Officers
     `INSERT INTO officers (full_name, email, password, dob, gender) VALUES
-    ('Michael Brown', 'michael.brown@company.com', 'password123', '1985-04-10', 'Male'),
-    ('Emily Clark', 'emily.clark@company.com', 'password456', '1990-07-23', 'Female'),
-    ('David Wilson', 'david.wilson@company.com', 'password789', '1987-11-05', 'Male');`,
+    ('Michael Brown', 'michael.brown@company.com', '${encryptData("password123")}', '1985-04-10', 'Male'),
+    ('Emily Clark', 'emily.clark@company.com', '${encryptData("password1234332")}', '1990-07-23', 'Female'),
+    ('David Wilson', 'david.wilson@company.com', '${encryptData("password123")}', '1987-11-05', 'Male');`,
 
     // Insert Suppliers
     `INSERT INTO suppliers (name, address, email, password, phone) VALUES
-    ('ABC Suppliers', '123 Main Street, City, Country', 'abc.supplier@example.com', 'supplier123', '555-1234'),
-    ('XYZ Enterprises', '456 Oak Avenue, City, Country', 'xyz.enterprises@example.com', 'enterprises456', '555-5678'),
-    ('Global Traders', '789 Pine Road, City, Country', 'global.traders@example.com', 'global789', '555-9101');`,
+    ('ABC Suppliers', '123 Main Street, City, Country', 'abc.supplier@example.com', '${encryptData("password123")}', '555-1234'),
+    ('XYZ Enterprises', '456 Oak Avenue, City, Country', 'xyz.enterprises@example.com', '${encryptData("password123")}', '555-5678'),
+    ('Global Traders', '789 Pine Road, City, Country', 'global.traders@example.com', '${encryptData("password123")}', '555-9101');`,
 
     // Insert Admins
     `INSERT INTO admins (email, password) VALUES
@@ -103,19 +104,13 @@ const insertDummyDataQueries = [
     ('Global Traders', 3, 'Electronics Tender', 12000.00, 'Rejected');`,
 
     // Insert Tenders
-    `INSERT INTO tenders (title, description, supplier_name, supplier_id, bid_price, created_at, expiry_date, status) VALUES
-    ('Office Supplies Tender', 'Tender for office supplies including chairs, desks, and computers.', 'ABC Suppliers', 1, 1500.00, NOW(), '2024-12-31', 'Open'),
-    ('Construction Materials Tender', 'Tender for construction materials for building projects.', 'XYZ Enterprises', 2, 35000.00, NOW(), '2024-12-15', 'Closed'),
-    ('Electronics Tender', 'Tender for purchasing electronics for the government office.', 'Global Traders', 3, 12000.00, NOW(), '2024-11-30', 'Open');`
+    `INSERT INTO tenders (title, description, bid_price, created_at, expiry_date, status) VALUES
+    ('Office Supplies Tender', 'Tender for office supplies including chairs, desks, and computers.', 1500.00, NOW(), '2024-12-31', 'Open'),
+    ('Construction Materials Tender', 'Tender for construction materials for building projects.', 35000.00, NOW(), '2024-12-15', 'Closed'),
+    ('Electronics Tender', 'Tender for purchasing electronics for the government office.', 12000.00, NOW(), '2024-11-30', 'Open');`
 ];
 
-connection.connect(err => {
-    if (err) {
-        console.error('Error connecting to the database:', err.stack);
-        return;
-    }
-    console.log('Connected to the MySQL server.');
-})
+
 
 // Function to create the tables
 function createTables() {
@@ -143,6 +138,13 @@ function insertDummyData() {
         });
     });
 }
+connection.connect(err => {
+    if (err) {
+        console.error('Error connecting to the database:', err.stack);
+        return;
+    }
+    console.log('Connected to the MySQL server.');
+    // Call the function to create tables
+    insertDummyData()
+})
 
-// Call the function to create tables
-createTables();

@@ -1,11 +1,9 @@
 import React,{ useState} from 'react'
 import { getCookie } from '../../../data';
 
-const ViewGrantedTender = ({ acceptedTenders }) => {
+const ViewGrantedTender = () => {
 
   const [acceptedTenders,setAcceptedTenders] = useState([]);
-
-  
 
   React.useEffect(()=>{
     fetch(import.meta.env.VITE_API_URL+"/tenders",{

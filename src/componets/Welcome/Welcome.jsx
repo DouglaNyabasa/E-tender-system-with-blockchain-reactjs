@@ -3,6 +3,7 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import TopBar from "../Topbar/TopBar";
+import { useEffect } from "react";
 
 
 
