@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,7 +13,8 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = ()=>{
+const handleSubmit = (event)=>{
+  event.preventDefault()
   fetch(import.meta.env.VITE_API_URL+"/login",{
     method:"POST",
     headers: {
@@ -26,11 +28,10 @@ const handleSubmit = ()=>{
     return response.json(); 
   }).then(data => {
     if(data.u_token){
-      const date = new Date();
-      date.setTime(date.getTime() + (31 * 24 * 60 * 60 * 1000));  // Set expiration date
-      const expires = "expires=" + date.toUTCString();
-      document.cookie = `token=${data.u_token}; ${expires}; path=/`;  // Set cookie
-      window.location.href = "/"
+      Cookies.set('token', data.u_token, { expires: 30, path: '' })
+      window.location.href = "/supplierDashboard"
+    }else{
+      alert(data.msg)
     }
   })
   .catch(error => {
@@ -75,6 +76,7 @@ const handleSubmit = ()=>{
           <div className="mt-7">
             <button
               type="submit"
+
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >
               Login

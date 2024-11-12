@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import companyLogo from '../../assets/flutterwave.jpg'
-
+import Cookies from "js-cookie";
 
 
 const RegisterSupplier = () => {
@@ -26,24 +26,14 @@ const RegisterSupplier = () => {
     const file = event.target.files[0];
     console.log(file);
   };
-  function getCookie(name) {
-    const nameEq = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i].trim();
-      if (c.indexOf(nameEq) === 0) {
-        return c.substring(nameEq.length, c.length);
-      }
-    }
-    return null; // If cookie doesn't exist
-  }
+  
 
   const submitHandler = async (event) => {
     event.preventDetail();
     fetch(import.meta.env.VITE_API_URL+"/supplier/register",{
       method:"POST",
       headers:{
-        "Authorization":`Bearer `+getCookie("token")
+        "Authorization":`Bearer `+Cookies.get("token")
       },
       body:{
         email:email,
@@ -59,11 +49,8 @@ const RegisterSupplier = () => {
     return response.json();
     }).then((data)=>{
       if(data.data){
-        const date = new Date();
-        date.setTime(date.getTime() + (31 * 24 * 60 * 60 * 1000));  // Set expiration date
-        const expires = "expires=" + date.toUTCString();
-        document.cookie = `token=${data.u_token}; ${expires}; path=/`;  // Set cookie
-        window.location.href = "/"
+        Cookies.set('token', data.u_token, { expires: 30, path: '' })
+        window.location.href = "/supplierDashboard"
       }
     })
   };

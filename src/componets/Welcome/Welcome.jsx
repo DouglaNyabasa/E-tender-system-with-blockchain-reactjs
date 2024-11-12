@@ -26,7 +26,9 @@ const Welcome = () => {
   useEffect(()=>{
      if(!getCookie("token")){
       window.location.href= "/login";
-     } 
+     }else{
+      window.location.href = ""
+     }
   })
 
   return (

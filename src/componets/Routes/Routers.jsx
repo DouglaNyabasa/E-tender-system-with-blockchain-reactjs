@@ -39,28 +39,32 @@ const Routers = () => {
       <Route path='/login' element={<Login/>} />
     
 
+      <Route path='/adminDashboard' element={<ApprovedTenders/>} >
+        <Route path='addProcurementOfficer' element={<AddProcurementOfficer/>} />
+        <Route path='addTender' element={<AddTenders/>} />
+        <Route path='viewGrantedTender' element={<ViewGrantedTender/>} />
+      </Route>
 
-      <Route path='/approvedTenders' element={<ApprovedTenders/>} />
-      <Route path='/addTender' element={<AddTenders/>} />
-      <Route path='/officerDashboard' element={<OfficerDashboard/>} />
-      <Route path='/officerViewAllBiddings' element={<OfficerViewAllBiddings/>} />
+      <Route path='/officerDashboard' element={<OfficerDashboard/>} >
+        <Route path='addTender' element={<AddTenders/>} />
+        <Route path='approvedTenders' element={<ApprovedTenders/>} />
+        <Route path='officerViewAllBiddings' element={<OfficerViewAllBiddings/>} />
+      </Route>
+
+      <Route path='/supplierDashboard' element={<SupplierDashboard/>} >
+        <Route path='supplierViewAllTenders' element={<SupplierViewAllTenders/>} />
+        <Route path='applyTender' element={<ApplyTender/>} />
+      </Route>
+      
+      
+      
+      
       {/* <Route path='/officerViewAllTenders' element={<OfficerViewAllTenders/>} /> */}
       <Route path='/adminRegister' element={<SignupAdmin/>} />
-
-      
-      <Route path='/addProcurementOfficer' element={<AddProcurementOfficer/>} />
       {/* <Route path='/viewBiddings' element={<ViewBiddings/>} /> */}
-      <Route path='/viewGrantedTender' element={<ViewGrantedTender/>} />
+      
       <Route path='/viewSuppliers' element={<ViewSuppliers/>} />
-      <Route path='/adminDashboard' element={<Dashboard/>} />
-   
-      
-
-      
-      <Route path='/applyTender' element={<ApplyTender/>} />
-      <Route path='/supplierDashboard' element={<SupplierDashboard/>} />
       <Route path='/supplierRegister' element={<RegisterSupplier/>} />
-      <Route path='/supplierViewAllTenders' element={<SupplierViewAllTenders/>} />
 
 
 

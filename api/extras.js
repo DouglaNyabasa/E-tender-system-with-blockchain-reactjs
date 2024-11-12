@@ -15,7 +15,7 @@ function decryptData(str){
   return decrypted.toString(CryptoJS.enc.Utf8);
 }
 function generateToken(username,role){
-	var token = jwt.sign({user: username,u_role: role},privateKey,{algorithm: "RS256",expiresIn: "24h"});
+	var token = jwt.sign({user: username,u_role: role},privateKey,{expiresIn: "24h"});
 	return token;
 }
 function verifyToken(token){

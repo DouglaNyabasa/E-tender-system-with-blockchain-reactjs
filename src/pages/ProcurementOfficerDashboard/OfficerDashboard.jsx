@@ -23,13 +23,13 @@ const OfficerDashboard = () => {
           <nav>
             <ul className="space-y-3">
               <li>
-                <Link to="/officer-dashboard/add-tender" className="text-blue-600 hover:bg-blue-100 rounded px-2 py-1 transition duration-200">Add Tenders</Link>
+                <Link to="/add-tender" className="text-blue-600 hover:bg-blue-100 rounded px-2 py-1 transition duration-200">Add Tenders</Link>
               </li>
               <li>
-                <Link to="/officer-dashboard/approved-tenders" className="text-blue-600 hover:bg-blue-100 rounded px-2 py-1 transition duration-200">Approved Tenders</Link>
+                <Link to="/approvedTenders" className="text-blue-600 hover:bg-blue-100 rounded px-2 py-1 transition duration-200">Approved Tenders</Link>
               </li>
               <li>
-                <Link to="/officer-dashboard/view-biddings" className="text-blue-600 hover:bg-blue-100 rounded px-2 py-1 transition duration-200">View All Biddings</Link>
+                <Link to="/officerViewAllBiddings" className="text-blue-600 hover:bg-blue-100 rounded px-2 py-1 transition duration-200">View All Biddings</Link>
               </li>
             </ul>
           </nav>
