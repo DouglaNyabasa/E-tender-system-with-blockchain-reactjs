@@ -42,5 +42,5 @@ Before running this application, ensure you have the following:
 First, download the project files by cloning the repository:
 
 ```bash
-git clone https://github.com/DouglaNyabasa/e-tender-system-with-ai.git
-cd e-tender-system-with-ai
+git clone https://github.com/DouglaNyabasa/E-tender-system-with-blockchain-reactjs.git
+cd E-tender-system-with-blockchain-reactjs
