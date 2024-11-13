@@ -1,58 +1,51 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { assets } from "../assets/assets_admin/assets";
+import { NavLink, Outlet } from "react-router-dom";
+import { assets } from "../../assets_admin/assets";
 
 const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-white border border-r">
-      {
-        <ul className="text-[#515151] mt-5">
-             <NavLink  className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary':''}`} to={'/admin-dashboard'}>
-                <img src={assets.home_icon} alt="" />
-                <p>Dashboard</p>
-            </NavLink>
+      <div className="flex flex-1">
+        <aside className="w-68 bg-white shadow-md p-4">
+          <h2 className="text-lg font-semibold mb-4">Menu</h2>
+          <nav>
+            <ul className="space-y-2">
+              <NavLink
+                className={({ active }) =>
+                  `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-blue-100 border-r-4 border-primary"
+                  }`
+                }
+                to={"/adminDashboard/addProcurementOfficer"}
+              >
+                <p className={`text-blue-500 font-bold`}>Add Procurement Officer</p>
+              </NavLink>
 
-          <NavLink
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-            to={"/addProcurementOfficer"}
-          >
-            <img src={assets.people_icon} alt="" />
-            <p>Add Procurement Officer</p>
-          </NavLink>
+              <NavLink
+                className={({ active }) =>
+                  `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-blue-100 border-r-4 border-primary"
+                  }`
+                }
+                to={"/adminDashboard/addTender"}
+              >
+                <p className={`text-blue-500 font-bold`}>Add Tenders</p>
+              </NavLink>
 
-          <NavLink
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-            to={"/addTender"}
-          >
-            <img src={assets.add_icon} alt="" />
-            <p>Add Tenders</p>
-          </NavLink>
-
-          <NavLink
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-            to={"/viewGrantedTender"}
-          >
-            <img src={assets.tick_icon} alt="" />
-            <p>View All Tenders</p>
-          </NavLink>
-
-     
-
-
-        </ul>
-      }
+              <NavLink
+                className={({ active }) =>
+                  `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-blue-100 border-r-4 border-primary"
+                  }`
+                }
+                to={"/adminDashboard/viewGrantedTender"}
+              >
+                <p className={`text-blue-500 font-bold`}>View All Tenders</p>
+              </NavLink>
+            </ul>
+          </nav>
+        </aside>
+        <div className="flex-1 p-4">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 };

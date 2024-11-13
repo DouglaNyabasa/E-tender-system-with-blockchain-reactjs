@@ -8,7 +8,7 @@ const ViewSuppliers = () => {
     fetch(import.meta.env.VITE_API_URL+"/tenders",{
       method:"GET",
       header:{
-        "Authorization":"Bearer "+getCookie(token)
+        "Authorization":"Bearer "+getCookie("token")
       }
     }).then((response)=>{
       if(!response.ok){

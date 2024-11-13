@@ -1,24 +1,13 @@
 import React from 'react'
+import { getCookie } from '../../../data';
 
 const AddProcurementOfficer = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState("");
-  const [role] = useState('Procurement Officer'); // Default role
-  const [gender, setGender] = useState('');
-  const [dob, setDob] = useState('');
-
-  function getCookie(name) {
-    const nameEq = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i].trim();
-      if (c.indexOf(nameEq) === 0) {
-        return c.substring(nameEq.length, c.length);
-      }
-    }
-    return null; // If cookie doesn't exist
-  }
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [role,setRoles] = React.useState('Procurement Officer'); // Default role
+  const [gender, setGender] = React.useState('');
+  const [dob, setDob] = React.useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();

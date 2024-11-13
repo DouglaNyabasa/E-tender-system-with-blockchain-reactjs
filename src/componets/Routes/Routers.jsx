@@ -8,7 +8,7 @@ import Welcome from '../Welcome/Welcome'
 import Login from '../Authentication/Login'
 
 import AddProcurementOfficer from '../../pages/AdminDashboard/Pages/AddProcurementOfficer'
-// import ViewBiddings from '../../pages/AdminDashboard/Pages/ViewBiddings'
+import AdminDashboard from '../../pages/AdminDashboard/AdminDashboard'
 import ViewGrantedTender from '../../pages/AdminDashboard/Pages/ViewGrantedTender'
 import ViewSuppliers from '../../pages/AdminDashboard/Pages/ViewSuppliers'
 
@@ -39,7 +39,7 @@ const Routers = () => {
       <Route path='/login' element={<Login/>} />
     
 
-      <Route path='/adminDashboard' element={<ApprovedTenders/>} >
+      <Route path='/adminDashboard' element={<AdminDashboard/>} >
         <Route path='addProcurementOfficer' element={<AddProcurementOfficer/>} />
         <Route path='addTender' element={<AddTenders/>} />
         <Route path='viewGrantedTender' element={<ViewGrantedTender/>} />

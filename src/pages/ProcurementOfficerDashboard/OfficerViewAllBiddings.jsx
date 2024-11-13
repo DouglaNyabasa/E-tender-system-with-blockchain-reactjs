@@ -1,4 +1,5 @@
 import React from 'react'
+import { getCookie } from '../../data';
 
 const OfficerViewAllBiddings = () => {
   const [tenders,setTenders] = React.useState([]);

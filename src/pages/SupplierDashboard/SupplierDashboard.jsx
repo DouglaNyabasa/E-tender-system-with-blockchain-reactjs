@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 const SupplierDashboard = () => {
   return (
@@ -9,13 +9,20 @@ const SupplierDashboard = () => {
       </header>
       <div className="flex flex-1">
         <aside className="w-64 bg-white shadow-md p-4">
+          <h2 className="text-lg font-semibold mb-4">Menu</h2>
           <nav>
             <ul className="space-y-2">
               <li>
-                <Link to="/supplierViewAllTenders" className="text-blue-500 hover:underline">View All Tenders</Link>
+                <NavLink to="/supplierDashboard/supplierViewAllTenders"
+                  className={(active) => `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-[#F2F3FF] border-r-4 border-primary"}`}>
+                  <p className={`text-blue-500 font-bold`}>View All Tenders</p>
+                </NavLink>
               </li>
               <li>
-                <Link to="/applyTender" className="text-blue-500 hover:underline">Apply Tender</Link>
+                <NavLink to="/supplierDashboard/applyTender"
+                  className={(active) => `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-[#F2F3FF] border-r-4 border-primary"}`}>
+                  <p className={`text-blue-500 font-bold`}>Apply Tender</p>
+                </NavLink>
               </li>
             </ul>
           </nav>

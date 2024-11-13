@@ -4,7 +4,7 @@ import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import TopBar from "../Topbar/TopBar";
 import { useEffect } from "react";
-
+import { getCookie } from "../../data";
 
 
 
@@ -12,22 +12,12 @@ const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex jus
 
 
 const Welcome = () => {
-  function getCookie(name) {
-    const nameEq = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i].trim();
-      if (c.indexOf(nameEq) === 0) {
-        return c.substring(nameEq.length, c.length);
-      }
-    }
-    return null; // If cookie doesn't exist
-  }
+  
   useEffect(()=>{
      if(!getCookie("token")){
       window.location.href= "/login";
      }else{
-      window.location.href = ""
+      window.location.href = "/supplierDashboard/supplierViewAllTenders";
      }
   })
 
