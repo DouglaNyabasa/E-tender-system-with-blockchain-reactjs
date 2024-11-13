@@ -1,8 +1,8 @@
-# E-Tender System with Blockchain
+# E-Tender System with AI for Bid Evaluation
 
 ## Overview
 
-The **E-Tender System with Blockchain** is a digital platform that allows users (companies or organizations) to submit and evaluate tenders (bids) for various projects. The entire tendering process is secured and made transparent using **Blockchain** technology. This ensures that all data is stored in a tamper-proof and transparent way, making the system more trustworthy and fair.
+The **E-Tender System with AI** is a digital platform that allows users (companies or organizations) to submit and evaluate tenders (bids) for various projects. The tendering process is enhanced with **AI-based evaluation**, ensuring a fair, efficient, and data-driven approach to assess bids.
 
 ---
 
@@ -10,8 +10,8 @@ The **E-Tender System with Blockchain** is a digital platform that allows users 
 
 - **User Registration & Login**: Users can create accounts and log in to access the system.
 - **Create & Submit Tenders**: Registered users can create and submit tenders for projects.
-- **Evaluate Tenders**: Admins or authorized users can evaluate and accept tenders.
-- **Secure Record Keeping**: All tender-related actions are recorded on the blockchain for full transparency.
+- **Evaluate Tenders with AI**: Admins or authorized users can evaluate tenders using AI algorithms that assess the quality, relevance, and feasibility of the bids.
+- **AI-powered Bid Vetting**: AI models analyze submitted bids to rank or score them based on factors like completeness, pricing, alignment with project requirements, etc.
 - **Responsive Design**: The application works on both desktop and mobile devices.
 
 ---
@@ -19,9 +19,9 @@ The **E-Tender System with Blockchain** is a digital platform that allows users 
 ## Technologies
 
 - **Frontend**: Built using **ReactJS**, a framework for creating interactive user interfaces.
-- **Blockchain**: Uses **Blockchain** to securely store tender information, ensuring no tampering or data loss.
-- **Smart Contracts**: These are automated programs that handle the submission, evaluation, and status tracking of tenders.
-  
+- **AI for Bid Evaluation**: Machine learning models, implemented with Python libraries such as TensorFlow, scikit-learn, or Hugging Face, and integrated into the system using RESTful APIs.
+- **Backend**: **Node.js** to manage the backend logic, including user authentication, bid submission, and communication with the AI evaluation model.
+
 ---
 
 ## Requirements
@@ -29,8 +29,9 @@ The **E-Tender System with Blockchain** is a digital platform that allows users 
 Before running this application, ensure you have the following:
 
 1. A web browser (e.g., Chrome or Firefox).
-2. A **MetaMask** wallet for interacting with the blockchain.
-3. Basic understanding of how blockchain and smart contracts work (optional, but helpful).
+2. Node.js installed on your system.
+3. Basic understanding of machine learning (optional, but helpful).
+4. Python environment set up (for AI model training and inference).
 
 ---
 
@@ -41,5 +42,5 @@ Before running this application, ensure you have the following:
 First, download the project files by cloning the repository:
 
 ```bash
-git clone https://github.com/DouglaNyabasa/e-tender-system-with-blockchain.git
-cd e-tender-system-with-blockchain
+git clone https://github.com/DouglaNyabasa/e-tender-system-with-ai.git
+cd e-tender-system-with-ai
