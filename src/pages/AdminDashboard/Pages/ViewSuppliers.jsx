@@ -7,7 +7,7 @@ const ViewSuppliers = () => {
   React.useEffect(()=>{
     fetch(import.meta.env.VITE_API_URL+"/tenders",{
       method:"GET",
-      header:{
+      headers:{
         "Authorization":"Bearer "+getCookie("token")
       }
     }).then((response)=>{

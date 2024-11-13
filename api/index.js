@@ -70,11 +70,11 @@ app.use((req,res,next)=>{
 
     // Check if the URL is not '/login' and does not include '/register'
     if (urlPath !== '/login' && !urlPath.includes('/register')){
+        console.log(JSON.stringify(req.headers))
         const token = req.headers["authorization"]?.split(" ")[1];
-        if(!token) return res.status(403).json({error:"Missing token"});
-    }else{
-        next()
+        if(!token) return res.status(403).json({error:"Missing token"}); 
     }
+    next()
 });
 app.get("/api/otp/generate",(req,res)=>{
     const base32_secret = generateBase32Secret();
@@ -253,6 +253,17 @@ app.post("/transactions/edit",(req,res)=>{
     }
 
 });
+app.get("/tenders",(req,res)=>{
+
+    try{
+        mySQL_connection.query(`SELECT * FROM tenders`,(err,results)=>{
+            if (err) res.status(500).json({err:"Data quering error"});
+            res.json({data:results});
+       });
+    }catch(err){
+        res.status(400).json({error:"Something went wrong."});
+    }
+});
 app.get("/tenders/:id",(req,res)=>{
 
     try{
@@ -261,11 +272,6 @@ app.get("/tenders/:id",(req,res)=>{
          mySQL_connection.query(`SELECT * FROM tenders WHERE id=${req.params.id}`,(err,results)=>{
              if (err) res.status(500).json({err:"Data quering error"});
              res.json({data:results[0]});
-        });
-     }else{
-         mySQL_connection.query(`SELECT * FROM tenders`,(err,results)=>{
-             if (err) res.status(500).json({err:"Data quering error"});
-             res.json({data:results});
         });
      }
     }catch(err){

@@ -11,7 +11,7 @@ const AdminDashboard = () => {
           <nav>
             <ul className="space-y-2">
               <NavLink
-                className={({ active }) =>
+                className={(active ) =>
                   `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-blue-100 border-r-4 border-primary"
                   }`
                 }
@@ -21,7 +21,7 @@ const AdminDashboard = () => {
               </NavLink>
 
               <NavLink
-                className={({ active }) =>
+                className={(active ) =>
                   `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-blue-100 border-r-4 border-primary"
                   }`
                 }
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
               </NavLink>
 
               <NavLink
-                className={({ active }) =>
+                className={(active ) =>
                   `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-blue-100 border-r-4 border-primary"
                   }`
                 }
