@@ -19,6 +19,12 @@ const SupplierDashboard = () => {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/supplierDashboard/supplierMyTender"
+                  className={(active) => `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-[#F2F3FF] border-r-4 border-primary"}`}>
+                  <p className={`text-blue-500 font-bold`}>View My Tenders</p>
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/supplierDashboard/applyTender"
                   className={(active) => `flex items-center no-underline gap-3 text-blue-600 hover:bg-blue-100 rounded px-3 py-1 transition duration-200 ${active.isActive && "bg-[#F2F3FF] border-r-4 border-primary"}`}>
                   <p className={`text-blue-500 font-bold`}>Apply Tender</p>

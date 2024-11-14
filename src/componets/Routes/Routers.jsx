@@ -25,6 +25,7 @@ import RegisterSupplier from '../Authentication/RegisterSupplier'
 
 import SignupAdmin from '../Authentication/SignupAdmin'
 import Dashboard from '../Dashboard/Dashboard'
+import SupplierMyTenders from '../../pages/SupplierDashboard/SupplierMyTenders'
 
 
 
@@ -54,6 +55,7 @@ const Routers = () => {
       <Route path='/supplierDashboard' element={<SupplierDashboard/>} >
         <Route path='supplierViewAllTenders' element={<SupplierViewAllTenders/>} />
         <Route path='applyTender' element={<ApplyTender/>} />
+        <Route path='supplierMyTender' element={<SupplierMyTenders/>}/>
       </Route>
       
       

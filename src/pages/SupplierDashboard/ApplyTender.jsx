@@ -1,16 +1,41 @@
 import React from 'react'
 import { getCookie } from '../../data';
+import { useLocation } from 'react-router-dom';
 
 const ApplyTender = () => {
-  const [tenderId, setTendersId] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const getParams = useLocation().search;
+  const tenderId = new URLSearchParams(getParams).get("tenderId");
 
   React.useEffect(() => {
     fetch(import.meta.env.VITE_API_URL + "/tenders/"+tenderId, {
       method: "GET",
       headers: {
+        "Authorization": "Bearer " + getCookie("token"),
+
+      }
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Error occurred");
+      }
+      return response.json();
+    }).then((data) => {
+      setDescription(data.data.description);
+      setTitle(data.data.name);
+    })
+  });
+
+  const handleSubmit = ()=>{
+    fetch(import.meta.env.VITE_API_URL + "/tender/bid/add", {
+      method: "POST",
+      headers: {
         "Authorization": "Bearer " + getCookie("token")
+      },
+      body:{
+        tenderId:tenderId,
+        title:title,
+        amount:amount
       }
     }).then((response) => {
       if (!response.ok) {
@@ -20,7 +45,7 @@ const ApplyTender = () => {
     }).then((data) => {
       setTenders(data.data);
     })
-  })
+  }
   return (
     <div className="p-4 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Add Tender</h2>

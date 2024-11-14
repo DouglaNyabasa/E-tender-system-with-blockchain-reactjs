@@ -29,7 +29,7 @@ const handleSubmit = (event)=>{
   }).then(data => {
     if(data.u_token){
       Cookies.set('token', data.u_token, { expires: 30, path: '' })
-      window.location.href = "/supplierDashboard"
+      window.location.href = "/supplierDashboard/supplierViewAllTenders"
     }else{
       alert(data.msg)
     }
