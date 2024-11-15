@@ -26,6 +26,7 @@ import RegisterSupplier from '../Authentication/RegisterSupplier'
 import SignupAdmin from '../Authentication/SignupAdmin'
 import Dashboard from '../Dashboard/Dashboard'
 import SupplierMyTenders from '../../pages/SupplierDashboard/SupplierMyTenders'
+import SupplierSidebar from '../../pages/SupplierDashboard/SupplierSidebar'
 
 
 
@@ -52,7 +53,7 @@ const Routers = () => {
         <Route path='officerViewAllBiddings' element={<OfficerViewAllBiddings/>} />
       </Route>
 
-      <Route path='/supplierDashboard' element={<SupplierDashboard/>} >
+      <Route path='/supplierSidebar' element={<SupplierSidebar/>} >
         <Route path='supplierViewAllTenders' element={<SupplierViewAllTenders/>} />
         <Route path='applyTender' element={<ApplyTender/>} />
         <Route path='supplierMyTender' element={<SupplierMyTenders/>}/>

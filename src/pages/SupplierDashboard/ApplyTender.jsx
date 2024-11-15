@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const ApplyTender = () => {
   const [title, setTitle] = React.useState("");
+  const [tender, setTenders] = React.useState("");
   const [description, setDescription] = React.useState("");
   const getParams = useLocation().search;
   const tenderId = new URLSearchParams(getParams).get("tenderId");

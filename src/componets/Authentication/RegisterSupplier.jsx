@@ -1,58 +1,56 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import companyLogo from '../../assets/flutterwave.jpg'
 import Cookies from "js-cookie";
-
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toastify
 
 const RegisterSupplier = () => {
   const navigate = useNavigate();
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewURL, setPreviewURL] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     companyName: "",
     companyAddress: "",
     password: "",
-    photo: selectedFile,
     phoneNumber: "",
-
   });
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileInputChange = async (event) => {
-    const file = event.target.files[0];
-    console.log(file);
-  };
-  
-
   const submitHandler = async (event) => {
-    event.preventDetail();
-    fetch(import.meta.env.VITE_API_URL+"/supplier/register",{
-      method:"POST",
-      headers:{
-        "Authorization":`Bearer `+Cookies.get("token")
+    event.preventDefault(); // Corrected from preventDetail to preventDefault
+    fetch(import.meta.env.VITE_API_URL + "/supplier/register", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ` + Cookies.get("token"),
+        "Content-Type": "application/json", // Added Content-Type header
       },
-      body:{
-        email:email,
-        name: companyName,
-        password: password,
-        phone: phoneNumber,
-        address: companyAddress
-      }
-    }).then((response)=>{
+      body: JSON.stringify({
+        email: formData.email,
+        name: formData.companyName,
+        password: formData.password,
+        phone: formData.phoneNumber,
+        address: formData.companyAddress,
+      })
+    }).then((response) => {
       if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-    }).then((data)=>{
-      if(data.data){
-        Cookies.set('token', data.u_token, { expires: 30, path: '' })
-        window.location.href = "/supplierDashboard"
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then((data) => {
+      if (data.data) {
+        Cookies.set('token', data.u_token, { expires: 30, path: '' });
+        toast.success("Registration successful!"); // Show success message
+        navigate("/supplierDashboard"); // Navigate after success
+      } else {
+        toast.error(data.msg || "Registration failed!"); // Show error message if no token
       }
     })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+      toast.error("There was a problem with the registration."); // Show error message
+    });
   };
 
   return (
@@ -62,75 +60,54 @@ const RegisterSupplier = () => {
           Create a <span className="text-primaryColor">Supplier</span>{" "}Account
         </h3>
 
-        <form onSubmit={submitHandler}  className="py-4 md:py-0">
-        <div className="mb-5">
-                <input
-                  className="border border-zinc-300  rounded w-full p-2 mt-1"
-                  required
-                  type="text"
-                  placeholder="Company name"
-                  name="company Name"
-                  value={FormData.fullName}
-                  onChange={handleInputChange}
-                />
-              </div>
+        <form onSubmit={submitHandler} className="py-4 md:py-0">
           <div className="mb-5">
             <input
-              className="border border-zinc-300  rounded w-full p-2 mt-1"
+              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              required
+              type="text"
+              placeholder="Company Name"
+              name="companyName" // Corrected name attribute
+              value={formData.companyName} // Corrected to formData
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="mb-5">
+            <input
+              className="border border-zinc-300 rounded w-full p-2 mt-1"
               required
               type="text"
               placeholder="Company Address"
               name="companyAddress"
-              value={FormData.companyAddress}
+              value={formData.companyAddress} // Corrected to formData
               onChange={handleInputChange}
             />
           </div>
           <div className="mb-5">
             <input
-              className="border border-zinc-300  rounded w-full p-2 mt-1"
+              className="border border-zinc-300 rounded w-full p-2 mt-1"
               required
               type="text"
-              placeholder=" Phone Number"
-              name="companyAddress"
-              value={FormData.phoneNumber}
+              placeholder="Phone Number"
+              name="phoneNumber" // Corrected name attribute
+              value={formData.phoneNumber} // Corrected to formData
               onChange={handleInputChange}
             />
           </div>
-
           <div className="mb-5">
             <input
-              className="border border-zinc-300  rounded w-full p-2 mt-1"
+              className="border border-zinc-300 rounded w-full p-2 mt-1"
               required
               type="password"
               placeholder="Password"
               name="password"
-              value={FormData.password}
+              value={formData.password} // Corrected to formData
               onChange={handleInputChange}
             />
           </div>
-          {/* <div className="mb-5 flex items-center gap-3">
-                <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
-                  <img src={companyLogo} alt="" className="w-full rounded-full" />
-                </figure>
-
-                <div className="relative w-[130px] h-[50px]">
-                  <input
-                    type="file"
-                    name="photo"
-                    id="customFile"
-                    onChange={handleFileInputChange}
-                    accept=".jpg, .png"
-                    className="absolute top-0 left-0 w-full h-full cursor-pointer opacity-0"
-                  />
-
-                  <label htmlFor="customFile" className="absolute top-0 left-0 w-full h-full flex items-center px-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer">
-                    Upload Photo</label>
-                </div>
-              </div> */}
 
           <div className="mt-7">
             <button
-           onClick={()=> navigate('supplierDashboard')}
               type="submit"
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >
@@ -145,6 +122,7 @@ const RegisterSupplier = () => {
           </p>
         </form>
       </div>
+      <ToastContainer /> {/* Add ToastContainer here */}
     </section>
   );
 };

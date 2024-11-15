@@ -1,48 +1,56 @@
-import React from 'react'
+import React from 'react';
 import { getCookie } from '../../../data';
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toastify
 
 const AddProcurementOfficer = () => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState("");
-  const [role,setRoles] = React.useState('Procurement Officer'); // Default role
+  const [role, setRoles] = React.useState('Procurement Officer'); // Default role
   const [gender, setGender] = React.useState('');
   const [dob, setDob] = React.useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(import.meta.env.VITE_API_URL+"/officer/adduser",{
-      method:"POST",
-      headers:{
-        "Authorization":`Bearer `+getCookie("token")
+    fetch(import.meta.env.VITE_API_URL + "/officer/adduser", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ` + getCookie("token"),
+        "Content-Type": "application/json", // Ensure you're sending JSON
       },
-      body:{
-        firstName:firstName,
-        lastName:lastName,
-        dob:dob,
-        gender:gender,
-        email:email
-      }
-    }).then((response)=>{
+      body: JSON.stringify({ // Convert body to JSON string
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        gender: gender,
+        email: email
+      })
+    }).then((response) => {
       if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-    }).then((data)=>{
-      if(data.data){
-        alert("User has been added");
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then((data) => {
+      if (data.data) {
+        toast.success("User has been added successfully!"); // Success message
         setFirstName('');
         setLastName('');
         setEmail('');
         setGender('');
         setDob('');
+      } else {
+        toast.error("Failed to add user."); // Error message if user not added
       }
-    })
-    
+    }).catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+      toast.error("There was a problem with adding the user."); // Error message for catch
+    });
   };
 
   return (
     <div className="p-4 bg-white shadow-md rounded">
+      <ToastContainer /> {/* Add ToastContainer for notifications */}
       <h2 className="text-2xl font-bold mb-4">Procurement Officer</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -114,4 +122,4 @@ const AddProcurementOfficer = () => {
   );
 };
 
-export default AddProcurementOfficer
+export default AddProcurementOfficer;

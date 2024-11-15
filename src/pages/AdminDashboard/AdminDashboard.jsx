@@ -1,8 +1,18 @@
-import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import Cookies from 'js-cookie';
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { assets } from "../../assets_admin/assets";
 
 const AdminDashboard = () => {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+      navigate('/Welcome'); // Redirect to signup if no token
+    }
+  }, [navigate]);
   return (
     <div className="min-h-screen bg-white border border-r">
       <div className="flex flex-1">

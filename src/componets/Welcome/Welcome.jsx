@@ -13,13 +13,13 @@ const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex jus
 
 const Welcome = () => {
   
-  useEffect(()=>{
-     if(!getCookie("token")){
-      window.location.href= "/login";
-     }else{
-      window.location.href = "/supplierDashboard/supplierViewAllTenders";
-     }
-  })
+  // useEffect(()=>{
+  //    if(!getCookie("token")){
+  //     window.location.href= "/login";
+  //    }else{
+  //     window.location.href = "/supplierDashboard/supplierViewAllTenders";
+  //    }
+  // })
 
   return (
     

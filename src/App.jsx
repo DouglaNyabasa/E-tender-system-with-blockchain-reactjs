@@ -6,12 +6,14 @@ import './index.css'
 import "./App.css";
 
 import Layout from "./componets/layout/Layout";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
   return (
     <>
     <Layout/>
+    <ToastContainer />
     </>
   );
 }

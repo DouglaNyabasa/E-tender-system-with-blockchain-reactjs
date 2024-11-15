@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toastify
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,31 +15,33 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = (event)=>{
-  event.preventDefault()
-  fetch(import.meta.env.VITE_API_URL+"/login",{
-    method:"POST",
-    headers: {
-      'Content-Type': 'application/json'  // Tell the server that we're sending JSON data
-    },
-    body: JSON.stringify(formData)
-  }).then((response)=>{
-   if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json(); 
-  }).then(data => {
-    if(data.u_token){
-      Cookies.set('token', data.u_token, { expires: 30, path: '' })
-      window.location.href = "/supplierDashboard/supplierViewAllTenders"
-    }else{
-      alert(data.msg)
-    }
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
-}
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch(import.meta.env.VITE_API_URL + "/login", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'  // Tell the server that we're sending JSON data
+      },
+      body: JSON.stringify(formData)
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then(data => {
+      if (data.u_token) {
+        Cookies.set('token', data.u_token, { expires: 30, path: '' });
+        toast.success("Login successful!"); // Show success message
+        navigate("/supplierDashboard/supplierViewAllTenders"); // Use navigate instead of window.location.href
+      } else {
+        toast.error(data.msg || "Login failed!"); // Show error message
+      }
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+      toast.error("There was a problem with the login."); // Show error message
+    });
+  }
 
   return (
     <section className="px-5 lg:px-0">
@@ -49,34 +53,31 @@ const handleSubmit = (event)=>{
         <form onSubmit={handleSubmit} className="py-4 md:py-0">
           <div className="mb-5">
             <input
-              className="border border-zinc-300  rounded w-full p-2 mt-1"
+              className="border border-zinc-300 rounded w-full p-2 mt-1"
               required
               type="email"
               placeholder="Enter Your Email"
               name="email"
-              value={FormData.email}
+              value={formData.email} // Corrected to formData
               onChange={handleInputChange}
             />
           </div>
-     
-         
+
           <div className="mb-5">
             <input
-              className="border border-zinc-300  rounded w-full p-2 mt-1"
+              className="border border-zinc-300 rounded w-full p-2 mt-1"
               required
               type="password"
               placeholder="Password"
               name="password"
-              value={FormData.password}
+              value={formData.password} // Corrected to formData
               onChange={handleInputChange}
             />
           </div>
-          
-          
+
           <div className="mt-7">
             <button
               type="submit"
-
               className="w-full bg-primaryColor px-4 py-3 rounded-lg text-white text-[18px] leading-[30px]"
             >
               Login
@@ -90,6 +91,7 @@ const handleSubmit = (event)=>{
           </p>
         </form>
       </div>
+      <ToastContainer /> {/* Add ToastContainer here */}
     </section>
   );
 };
