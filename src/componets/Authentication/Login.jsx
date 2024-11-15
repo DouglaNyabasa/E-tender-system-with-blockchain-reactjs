@@ -1,48 +1,27 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toastify
+
+import { toast } from 'react-toastify';
+import { loginUser } from './authService';
+
+
+
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleLogin = async (e) => {
+      e.preventDefault();
+      try {
+          await loginUser(email, password);
+          toast.success("Login successful!");
+          navigate('/dashboard'); // Redirect to dashboard after successful login
+      } catch (error) {
+          toast.error(error.message);
+      }
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    fetch(import.meta.env.VITE_API_URL + "/login", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'  // Tell the server that we're sending JSON data
-      },
-      body: JSON.stringify(formData)
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    }).then(data => {
-      if (data.u_token) {
-        Cookies.set('token', data.u_token, { expires: 30, path: '' });
-        toast.success("Login successful!"); // Show success message
-        navigate("/supplierDashboard/supplierViewAllTenders"); // Use navigate instead of window.location.href
-      } else {
-        toast.error(data.msg || "Login failed!"); // Show error message
-      }
-    })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error);
-      toast.error("There was a problem with the login."); // Show error message
-    });
-  }
-
   return (
     <section className="px-5 lg:px-0">
       <div className="w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10">
@@ -50,28 +29,28 @@ const Login = () => {
           Hello <span className="text-primaryColor ">Welcome</span> Back
         </h3>
 
-        <form onSubmit={handleSubmit} className="py-4 md:py-0">
+        <form onSubmit={handleLogin} className="py-4 md:py-0">
           <div className="mb-5">
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className="w-full py-3 border-b border=[#0066ff51] focus:outline-none focus:border-b-primaryColor text-[18px] leading-7 text-headingColor placeholder:text-textColor  cursor-pointer"
               required
               type="email"
               placeholder="Enter Your Email"
               name="email"
-              value={formData.email} // Corrected to formData
-              onChange={handleInputChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className="mb-5">
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className="w-full py-3 border-b border-red-800 focus:outline-none focus:border-b-primaryColor text-[18px] leading-7 text-headingColor placeholder:text-textColor  cursor-pointer"
               required
               type="password"
               placeholder="Password"
               name="password"
-              value={formData.password} // Corrected to formData
-              onChange={handleInputChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
@@ -91,7 +70,6 @@ const Login = () => {
           </p>
         </form>
       </div>
-      <ToastContainer /> {/* Add ToastContainer here */}
     </section>
   );
 };

@@ -1,51 +1,48 @@
 import React from 'react';
-import { getCookie } from '../../../data';
-import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toastify
+import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase Auth functions
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddProcurementOfficer = () => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState("");
-  const [role, setRoles] = React.useState('Procurement Officer'); // Default role
   const [gender, setGender] = React.useState('');
   const [dob, setDob] = React.useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch(import.meta.env.VITE_API_URL + "/officer/adduser", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ` + getCookie("token"),
-        "Content-Type": "application/json", // Ensure you're sending JSON
-      },
-      body: JSON.stringify({ // Convert body to JSON string
+
+    const auth = getAuth();
+    const firestore = getFirestore();
+
+    try {
+      // Create user with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, "defaultPassword123"); // Replace with a secure password or prompt for it
+      const user = userCredential.user;
+
+      // Save additional user data to Firestore
+      await setDoc(doc(firestore, "users", user.uid), {
         firstName: firstName,
         lastName: lastName,
-        dob: dob,
+        email: email,
+        role: "Procurement Officer",
         gender: gender,
-        email: email
-      })
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    }).then((data) => {
-      if (data.data) {
-        toast.success("User has been added successfully!"); // Success message
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-        setGender('');
-        setDob('');
-      } else {
-        toast.error("Failed to add user."); // Error message if user not added
-      }
-    }).catch((error) => {
-      console.error('There was a problem with the fetch operation:', error);
-      toast.error("There was a problem with adding the user."); // Error message for catch
-    });
+        dob: dob,
+        createdAt: new Date(),
+      });
+
+      toast.success("User has been added successfully!");
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setGender('');
+      setDob('');
+    } catch (error) {
+      console.error('There was a problem with the operation:', error);
+      toast.error("There was a problem with adding the user: " + error.message);
+    }
   };
 
   return (
@@ -87,7 +84,7 @@ const AddProcurementOfficer = () => {
           <label className="block mb-2">Role</label>
           <input
             type="text"
-            value={role}
+            value="Procurement Officer"
             readOnly
             className="border rounded w-full p-2 bg-gray-200"
           />

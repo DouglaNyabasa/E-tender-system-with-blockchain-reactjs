@@ -32,6 +32,7 @@
     "echarts": "^5.5.1",
     "eth-revert-reason": "^1.0.3",
     "ethers": "^5.5.1",
+    "firebase": "^11.0.2",
     "formik": "^2.4.6",
     "framer-motion": "^5.3.1",
     "js-cookie": "^3.0.5",

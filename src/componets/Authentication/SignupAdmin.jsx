@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth functions
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,40 +10,58 @@ const SignupAdmin = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: false }); // Reset error state on change
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+    return regex.test(email);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
+    // Reset error states
+    setErrors({ email: false, password: false });
+
+    // Validation
+    if (!formData.email || !formData.password) {
+      toast.error("Both fields are required.");
+      if (!formData.email) setErrors(prev => ({ ...prev, email: true }));
+      if (!formData.password) setErrors(prev => ({ ...prev, password: true }));
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      toast.error("Please enter a valid email address.");
+      setErrors(prev => ({ ...prev, email: true }));
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      setErrors(prev => ({ ...prev, password: true }));
+      return;
+    }
+
+    const auth = getAuth(); // Initialize Firebase Authentication
+
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + "/admin/register", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        toast.error(errorData.msg || "Registration failed!");
-        return;
-      }
-
-      const data = await response.json();
-      if (data.u_token) {
-        Cookies.set('token', data.u_token, { expires: 30, path: '' });
-        toast.success("Successfully registered!");
-        navigate("/adminDashboard");
-      } else {
-        toast.error(data.msg || "Registration failed!");
-      }
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      // Successfully registered
+      toast.success("Successfully registered!");
+      navigate("/adminDashboard");
     } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      toast.error("There was a problem with the registration.");
+      const errorMessage = error.message;
+      console.error('Registration error:', errorMessage);
+      toast.error("Registration failed: " + errorMessage);
     }
   };
 
@@ -57,7 +75,7 @@ const SignupAdmin = () => {
         <form onSubmit={handleSubmit} className="py-4 md:py-0">
           <div className="mb-5">
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className={`border ${errors.email ? 'border-red-500' : 'border-zinc-300'} rounded w-full p-2 mt-1`}
               required
               type="email"
               placeholder="Enter Your Email"
@@ -69,7 +87,7 @@ const SignupAdmin = () => {
 
           <div className="mb-5">
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className={`border ${errors.password ? 'border-red-500' : 'border-zinc-300'} rounded w-full p-2 mt-1`}
               required
               type="password"
               placeholder="Password"
@@ -95,7 +113,7 @@ const SignupAdmin = () => {
           </p>
         </form>
       </div>
-      <ToastContainer /> {/* ToastContainer for notifications */}
+      <ToastContainer />
     </section>
   );
 };

@@ -66,7 +66,7 @@ const Routers = () => {
       <Route path='/adminRegister' element={<SignupAdmin/>} />
       {/* <Route path='/viewBiddings' element={<ViewBiddings/>} /> */}
       
-      <Route path='/viewSuppliers' element={<ViewSuppliers/>} />
+      <Route path='/adminDashboard/viewSuppliers' element={<ViewSuppliers/>} />
       <Route path='/supplierRegister' element={<RegisterSupplier/>} />
 
 
